@@ -28,7 +28,7 @@ const LeftMainHeader = () => {
             <Link href="/" className="min-w-15">
                 <Title order={2} className="font-medium">Sistema Academico NB</Title>
             </Link>
-            <MainHeaderLink title="Estudantes" url="/marketplace/auction" />
+            <MainHeaderLink title="Estudantes" url="/student" />
             <MainHeaderLink title="Professores" url="/professor" />
             <MainHeaderLink title="Matérias" url="/" />
         </Box>
