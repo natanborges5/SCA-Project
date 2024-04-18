@@ -13,7 +13,7 @@ export const ListProfessor = () => {
     }
     return (
         <Box>
-            {fetchProfessorsQuery.isLoading ? <Center><Loader /></Center> : <Grid>
+            {fetchProfessorsQuery.isLoading ? <Center><Loader color="yellow" /></Center> : <Grid>
                 {professors.map((professor, index) => (
                     <GridCol span={4} key={index}>
                         <Stack gap={"sm"} className="bg-yellow-400 p-3 rounded-md">

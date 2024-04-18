@@ -2,7 +2,7 @@
 import { PropsWithChildren, createContext, useContext, useEffect, useMemo, useState } from "react";
 import { createFormContext, useForm } from '@mantine/form';
 import { useDisclosure } from "@mantine/hooks";
-import { ProfessorDto, StudentDto, StudyClass, Subject } from "@/lib/react-query";
+import { ProfessorDto, StudentDto, StudyClass, StudyClassRequestDto, Subject } from "@/lib/react-query";
 import { ApiClients, useApiClients } from "@/app/api-clients";
 type StudyClassContext = {
     studyClasses?: StudyClass[];
@@ -16,17 +16,7 @@ type StudyClassContext = {
     subjects: Subject[]
     toggle: () => void
 };
-export type StudyClassCreateDto = {
-    code: string;
-    name: string;
-    classroom: string;
-    description: string;
-    startTime: string;
-    professorId: number | string;
-    subjectId: number | string;
-    studentsIds: number[] | string[];
-}
-export const [StudyClassCreateFormProvider, useStudyClassCreateFormContext, useStudyClassCreateForm] = createFormContext<StudyClassCreateDto>();
+export const [StudyClassCreateFormProvider, useStudyClassCreateFormContext, useStudyClassCreateForm] = createFormContext<StudyClassRequestDto>();
 const StudyClassContext = createContext<StudyClassContext>({} as StudyClassContext);
 
 type StudyClassProviderProps = PropsWithChildren<{

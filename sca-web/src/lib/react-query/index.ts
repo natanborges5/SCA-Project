@@ -1,5 +1,11 @@
 import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import { useQuery, useMutation, useQueryClient, type QueryClient, type UseMutationOptions, type UseQueryOptions, type MutationFunction, type UseMutationResult, type UseQueryResult } from "@tanstack/react-query";
+export type SubjectRequestDto = {
+    name?: string;
+    description?: string;
+    workload?: number;
+    creditNumber?: number;
+};
 export type Address = {
     street?: string;
     city?: string;
@@ -49,7 +55,7 @@ export type Subject = {
     id?: number;
     name?: string;
     description?: string;
-    workLoad?: number;
+    workload?: number;
     creditNumber?: number;
     studyClasses?: StudyClass[];
 };
@@ -63,11 +69,15 @@ export type StudyClassRequestDto = {
     subjectId?: number;
     studentsIds?: number[];
 };
-export type SubjectRequestDto = {
+export type ProfessorRequestDto = {
     name?: string;
-    description?: string;
-    workLoad?: number;
-    creditNumber?: number;
+    registration?: string;
+    phone?: string;
+    email?: string;
+    curriculum?: string;
+    title?: "PROFESSOR" | "ASSOCIATE_PROFESSOR" | "ASSISTANT_PROFESSOR" | "INSTRUCTOR" | "LECTURER";
+    contractType?: "FULL_TIME" | "PART_TIME" | "VISITING" | "ADJUNCT";
+    address?: Address;
 };
 export type StudentRequestDto = {
     name?: string;
@@ -83,13 +93,13 @@ export type StudyClassDto = {
     name?: string;
     classroom?: string;
     description?: string;
-    startTime?: LocalTime;
+    startTime?: string;
 };
 export type SubjectResponseDto = {
     id?: number;
     name?: string;
     description?: string;
-    workLoad?: number;
+    workload?: number;
     creditNumber?: number;
     studyClasses?: StudyClassDto[];
 };
@@ -195,7 +205,7 @@ function makeRequests(axios: AxiosInstance, config?: AxiosConfig) {
             method: "delete",
             url: `/subject/${id}`
         }).then(res => res.data),
-        updateSubject: (payload: Subject, id: number) => axios.request<Subject>({
+        updateSubject: (payload: SubjectRequestDto, id: number) => axios.request<Subject>({
             method: "put",
             url: `/subject/${id}`,
             data: payload,
@@ -211,7 +221,7 @@ function makeRequests(axios: AxiosInstance, config?: AxiosConfig) {
             method: "delete",
             url: `/studyClass/${id}`
         }).then(res => res.data),
-        updateStudyClass: (payload: StudyClassRequestDto, id: number) => axios.request<StudyClass>({
+        updateStudyClass: (payload: StudyClassRequestDto, id: number) => axios.request<{}>({
             method: "put",
             url: `/studyClass/${id}`,
             data: payload,
@@ -243,7 +253,7 @@ function makeRequests(axios: AxiosInstance, config?: AxiosConfig) {
             method: "delete",
             url: `/professor/${id}`
         }).then(res => res.data),
-        updateProfessor: (payload: Professor, id: number) => axios.request<Professor>({
+        updateProfessor: (payload: ProfessorRequestDto, id: number) => axios.request<Professor>({
             method: "put",
             url: `/professor/${id}`,
             data: payload,
@@ -291,7 +301,7 @@ function makeRequests(axios: AxiosInstance, config?: AxiosConfig) {
             method: "get",
             url: `/professor`
         }).then(res => res.data),
-        saveProfessor: (payload: Professor) => axios.request<Professor>({
+        saveProfessor: (payload: ProfessorRequestDto) => axios.request<Professor>({
             method: "post",
             url: `/professor`,
             data: payload,

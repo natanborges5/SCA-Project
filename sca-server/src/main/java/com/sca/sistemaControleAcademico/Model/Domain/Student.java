@@ -30,7 +30,7 @@ public class Student {
     private Address address;
 
     @JsonBackReference
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(
         name = "student_studyClass",
         joinColumns = @JoinColumn(name = "id_student"),

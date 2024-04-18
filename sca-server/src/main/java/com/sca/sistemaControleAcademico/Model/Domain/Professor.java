@@ -28,6 +28,7 @@ public class Professor {
     private String registration;
     private String phone;
     private String email;
+    @Column(length = 1000)
     private String curriculum;
     private ProfessorTitle title;
     private ContractType contractType;

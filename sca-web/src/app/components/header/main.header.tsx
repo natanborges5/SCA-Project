@@ -30,7 +30,7 @@ const LeftMainHeader = () => {
             </Link>
             <MainHeaderLink title="Estudantes" url="/student" />
             <MainHeaderLink title="Professores" url="/professor" />
-            <MainHeaderLink title="Matérias" url="/" />
+            <MainHeaderLink title="Disciplinas" url="/subject" />
         </Box>
     );
 };

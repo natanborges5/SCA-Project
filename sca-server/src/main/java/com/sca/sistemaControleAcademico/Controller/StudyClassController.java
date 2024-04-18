@@ -33,7 +33,7 @@ public class StudyClassController {
             StudyClass newStudyClass = studyClassService.create(studyClass);
             return ResponseEntity.ok(newStudyClass);
         }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Falha ao cadastrar Disciplina " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Falha ao cadastrar Turma " + e.getMessage());
         }
     }
     @GetMapping("/studyClass")
@@ -48,10 +48,15 @@ public class StudyClassController {
         return studyClassService.findById(studyClassId);
     }
     @PutMapping("/studyClass/{id}")
-    public StudyClass
-    updateStudyClass(@RequestBody StudyClassRequestDto studyClass, @PathVariable("id") int studyClassId)
+    public ResponseEntity<?> updateStudyClass(@RequestBody StudyClassRequestDto studyClass, @PathVariable("id") int studyClassId)
     {
-        return studyClassService.updateStudyClass(studyClass, studyClassId);
+        try {
+            System.out.println(studyClass);
+            StudyClass newStudyClass = studyClassService.updateStudyClass(studyClass, studyClassId);
+            return ResponseEntity.ok(newStudyClass);
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Falha ao cadastrar Turma " + e.getMessage());
+        }
     }
     @DeleteMapping("/studyClass/{id}")
     public String deleteStudyClassById(@PathVariable("id") int studyClassId)

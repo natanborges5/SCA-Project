@@ -22,8 +22,9 @@ public class Subject {
     private Integer id;
 
     private String name;
+    @Column(length = 1000)
     private String description;
-    private Integer workLoad;
+    private Integer workload;
     private Integer creditNumber;
 
     @JsonBackReference

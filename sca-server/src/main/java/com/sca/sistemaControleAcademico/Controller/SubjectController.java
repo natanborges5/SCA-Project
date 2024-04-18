@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.sca.sistemaControleAcademico.Mapper.SubjectMapper;
 import java.util.List;
@@ -29,14 +31,14 @@ public class SubjectController {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = String.class))),
     })
     @PostMapping("/subject")
-    public Subject saveSubject(@Valid @RequestBody SubjectRequestDto subjectRequest)
+    public ResponseEntity<?> saveSubject(@Valid @RequestBody SubjectRequestDto subjectRequest)
     {
         try {
             Subject subject = subjectMapper.subjectRequestDtoToSubject(subjectRequest);
-            return subjectService.create(subject);
+            Subject newSubject = subjectService.create(subject);
+            return ResponseEntity.ok(newSubject);
         }catch (Exception e) {
-            System.out.println("Falha ao cadastrar Disciplina " + subjectRequest.getName());
-            return null;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Falha ao cadastrar Disciplina " + e.getMessage());
         }
     }
     @GetMapping("/subject")
@@ -53,9 +55,16 @@ public class SubjectController {
     }
     @PutMapping("/subject/{id}")
     public Subject
-    updateSubject(@RequestBody Subject subject, @PathVariable("id") int subjectId)
+    updateSubject(@RequestBody SubjectRequestDto subjectRequest, @PathVariable("id") int subjectId)
     {
-        return subjectService.updateSubject(subject, subjectId);
+        try {
+            Subject subject = subjectMapper.subjectRequestDtoToSubject(subjectRequest);
+            return subjectService.updateSubject(subject, subjectId);
+        }catch (Exception e) {
+            System.out.println("Falha ao editar Disciplina " + subjectRequest.getName());
+            return null;
+        }
+
     }
     @DeleteMapping("/subject/{id}")
     public String deleteSubjectById(@PathVariable("id") int subjectId)

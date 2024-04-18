@@ -3,10 +3,10 @@ info:
   title: OpenAPI definition
   version: v0
 servers:
-  - url: http://localhost:8080
+  - url: 'http://localhost:8080'
     description: Generated server url
 paths:
-  /subject/{id}:
+  '/subject/{id}':
     get:
       tags:
         - subject-controller
@@ -40,7 +40,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Subject'
+              $ref: '#/components/schemas/SubjectRequestDto'
         required: true
       responses:
         '200':
@@ -67,7 +67,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  /studyClass/{id}:
+  '/studyClass/{id}':
     get:
       tags:
         - study-class-controller
@@ -109,7 +109,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/StudyClass'
+                type: object
     delete:
       tags:
         - study-class-controller
@@ -128,7 +128,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  /student/{id}:
+  '/student/{id}':
     get:
       tags:
         - user-controller
@@ -189,7 +189,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  /professor/{id}:
+  '/professor/{id}':
     get:
       tags:
         - user-controller
@@ -223,7 +223,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Professor'
+              $ref: '#/components/schemas/ProfessorRequestDto'
         required: true
       responses:
         '200':
@@ -389,7 +389,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Professor'
+              $ref: '#/components/schemas/ProfessorRequestDto'
         required: true
       responses:
         '200':
@@ -400,6 +400,19 @@ paths:
                 $ref: '#/components/schemas/Professor'
 components:
   schemas:
+    SubjectRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        workload:
+          type: integer
+          format: int32
+        creditNumber:
+          type: integer
+          format: int32
     Address:
       type: object
       properties:
@@ -519,7 +532,7 @@ components:
           type: string
         description:
           type: string
-        workLoad:
+        workload:
           type: integer
           format: int32
         creditNumber:
@@ -553,19 +566,36 @@ components:
           items:
             type: integer
             format: int32
-    SubjectRequestDto:
+    ProfessorRequestDto:
       type: object
       properties:
         name:
           type: string
-        description:
+        registration:
           type: string
-        workLoad:
-          type: integer
-          format: int32
-        creditNumber:
-          type: integer
-          format: int32
+        phone:
+          type: string
+        email:
+          type: string
+        curriculum:
+          type: string
+        title:
+          type: string
+          enum:
+            - PROFESSOR
+            - ASSOCIATE_PROFESSOR
+            - ASSISTANT_PROFESSOR
+            - INSTRUCTOR
+            - LECTURER
+        contractType:
+          type: string
+          enum:
+            - FULL_TIME
+            - PART_TIME
+            - VISITING
+            - ADJUNCT
+        address:
+          $ref: '#/components/schemas/Address'
     StudentRequestDto:
       type: object
       properties:
@@ -596,7 +626,7 @@ components:
         description:
           type: string
         startTime:
-          $ref: '#/components/schemas/LocalTime'
+          type: string
     SubjectResponseDto:
       type: object
       properties:
@@ -607,7 +637,7 @@ components:
           type: string
         description:
           type: string
-        workLoad:
+        workload:
           type: integer
           format: int32
         creditNumber:

@@ -1,5 +1,5 @@
 import { StudyClassRequestDto } from "@/lib/react-query";
-import { Group, Button, Center, Loader, Grid, GridCol, Modal, LoadingOverlay, TextInput, Select, MultiSelect, Stack, Text, Box } from "@mantine/core";
+import { Group, Button, Center, Loader, Grid, GridCol, Modal, LoadingOverlay, TextInput, Select, MultiSelect, Stack, Text, Box, Divider } from "@mantine/core";
 import { TimeInput } from "@mantine/dates";
 import { notifications } from "@mantine/notifications";
 import { FaPlus } from "react-icons/fa6";
@@ -7,28 +7,46 @@ import { SectionTitle } from "../SectionTitle";
 import { useStudyClassContext } from "./studyClass-context";
 import { useDisclosure } from "@mantine/hooks";
 import { useLoadingOverlayStore } from "@/lib/load-overlay.store";
+import { CiEdit } from "react-icons/ci";
+import { MdDelete } from "react-icons/md";
+import { useApiClients } from "@/app/api-clients";
 
 export const StudyClassList = () => {
+    const { reactQuery } = useApiClients();
     const { studyClasses, isLoading, studyClassCreateForm, createStudyClassMutation, visible, toggle, findStudyClassQuery, professors, students, subjects } = useStudyClassContext()
     const [opened, { open, close }] = useDisclosure(false);
     const loadingOverlay = useLoadingOverlayStore();
+    const deleteStudent = async (id: number) => {
+        await reactQuery.requests.deleteStudyClassById(id)
+        findStudyClassQuery.refetch()
+    }
     return (
         <Stack gap={"xl"}>
             <Group justify="space-between">
                 <SectionTitle textValue="Turmas" />
-                <Button rightSection={<FaPlus />} onClick={open} color="teal">Criar Turma</Button>
+                <Button rightSection={<FaPlus />} onClick={open} color="yellow">Criar Turma</Button>
             </Group>
-            {isLoading ? <Center mt={"5%"}><Loader color="teal" /></Center> : <Grid>
+            {isLoading ? <Center mt={"5%"}><Loader color="yellow" /></Center> : <Grid>
                 {studyClasses?.map((item) => (
-                    <GridCol key={item.id} span={3}>
-                        <Stack gap={"sm"} className="bg-teal-300 p-2 rounded-md">
+                    <GridCol key={item.id} span={4}>
+                        <Stack gap={"sm"} className="bg-yellow-400 p-3 rounded-md">
                             <Text className="font-semibold">{item?.name}</Text>
-                            <Text><span className="font-semibold">Professor:</span>{item?.professor.name}</Text>
+                            <Text><span className="font-semibold">Professor: </span>{item?.professor?.name}</Text>
                             <Group justify="space-between">
                                 <Text><span className="font-semibold">Codigo: </span>{item?.code}</Text>
-                                <Text><span className="font-semibold">Horário: </span>{item.startTime}</Text>
+                                <Text><span className="font-semibold">Horário: </span>{item?.startTime}</Text>
                             </Group>
-                            <Text>{item?.description}</Text>
+                            <Text><span className="font-semibold">Disciplina: </span> {item?.subject?.name}</Text>
+                            <Text><span className="font-semibold">Descrição: </span>{item?.description}</Text>
+                            <Divider color="dark" />
+                            <Text className="font-semibold">Alunos</Text>
+                            <Group>
+                                {item?.students?.map(student => (
+                                    <Text>{student?.name} | </Text>
+                                ))}
+                            </Group>
+                            <Button color="dark" rightSection={<CiEdit />} component="a" href={`/studyClass/edit/${item.id}`}>Editar</Button>
+                            <Button color="red" rightSection={<MdDelete />} onClick={() => deleteStudent(item.id)}>Deletar</Button>
                         </Stack>
                     </GridCol>
                 ))}
@@ -41,7 +59,6 @@ export const StudyClassList = () => {
                             ...data,
                             subjectId: typeof data.subjectId === "string" && parseInt(data.subjectId),
                             professorId: typeof data.professorId === "string" && parseInt(data.professorId),
-                            studentsIds: data.studentsIds.map(id => parseInt(id)),
                         };
                         console.log("Data no submit", data);
                         loadingOverlay.toggleOn();

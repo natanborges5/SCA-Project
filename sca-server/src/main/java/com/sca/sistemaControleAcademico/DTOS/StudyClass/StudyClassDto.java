@@ -17,5 +17,5 @@ public class StudyClassDto {
     private String name;
     private String classroom;
     private String description;
-    private LocalTime startTime;
+    private String startTime;
 }

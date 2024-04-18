@@ -1,24 +1,10 @@
-import { Box, Button, Input, Select, Stack, Textarea, TextInput, Title } from "@mantine/core"
+import { Box, Button, Stack, Title } from "@mantine/core"
 import { useLoadingOverlayStore } from "@/lib/load-overlay.store";
 import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
-import PhoneInput from "react-phone-number-input";
 import { TextInputForm } from "@/app/components/common/text.input";
 import { useEditStudentContext } from "./student-edit-context";
-const titleOptions = [
-    { label: "Student", value: "STUDENT" },
-    { label: "Associate Student", value: "ASSOCIATE_STUDENT" },
-    { label: "Assistant Student", value: "ASSISTANT_STUDENT" },
-    { label: "Instructor", value: "INSTRUCTOR" },
-    { label: "Lecturer", value: "LECTURER" }
-];
 
-const contractTypeOptions = [
-    { label: "Full Time", value: "FULL_TIME" },
-    { label: "Part Time", value: "PART_TIME" },
-    { label: "Visiting", value: "VISITING" },
-    { label: "Adjunct", value: "ADJUNCT" }
-];
 export const CreateStudentForm = () => {
     const { studentEditForm, updateStudentMutation } = useEditStudentContext()
     const loadingOverlay = useLoadingOverlayStore();

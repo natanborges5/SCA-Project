@@ -2,6 +2,8 @@ package com.sca.sistemaControleAcademico.Model.Service;
 
 import com.sca.sistemaControleAcademico.Model.Domain.Address;
 import com.sca.sistemaControleAcademico.Model.Domain.Professor;
+import com.sca.sistemaControleAcademico.Model.Domain.StudyClass;
+import com.sca.sistemaControleAcademico.Model.Domain.Subject;
 import com.sca.sistemaControleAcademico.Model.Repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,15 @@ public class ProfessorService
     public List<Professor> findAll() {return (List<Professor>) professorRepository.findAll();}
     public Professor create (Professor professor) {return professorRepository.save(professor);}
     public Professor findById(int id) {return professorRepository.findById(id).orElse(null);}
-    public void delete(int id) {professorRepository.deleteById(id);}
+    public void delete(int id) {
+        Professor professorDb = professorRepository.findById(id).orElse(null);
+        if(professorDb != null & !professorDb.getStudyClasses().isEmpty()) {
+            for (StudyClass studyClass : professorDb.getStudyClasses()) {
+                studyClass.setProfessor(null);
+            }
+        }
+        professorRepository.deleteById(id);
+    }
     public Professor update(Professor professor, int professorId) {
         Professor depDB = professorRepository.findById(professorId).orElse(null);
         if(depDB == null) {return null;}

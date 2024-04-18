@@ -15,7 +15,7 @@ public class SubjectResponseDto {
     private Integer id;
     private String name;
     private String description;
-    private Integer workLoad;
+    private Integer workload;
     private Integer creditNumber;
     private List<StudyClassDto> studyClasses;
 }

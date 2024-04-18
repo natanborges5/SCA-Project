@@ -68,52 +68,62 @@ public class StudyClassService {
     }
 
     public StudyClass findById(int id) {return studyClassRepository.findById(id).orElse(null);}
-    public void delete(int id) {studyClassRepository.deleteById(id);}
+    public void delete(int id) {
+        StudyClass depDB = studyClassRepository.findById(id).orElse(null);
+        if(depDB != null & !depDB.getStudents().isEmpty()) {
+            for (Student student : depDB.getStudents()) {
+                student.getStudyClasses().remove(depDB);
+            }
+        }
+        studyClassRepository.deleteById(id);
+    }
     public StudyClass updateStudyClass(StudyClassRequestDto studyClass, int studyClassId) {
         StudyClass depDB = studyClassRepository.findById(studyClassId).orElse(null);
-        if(depDB == null) {return null;}
+        if (depDB == null) {
+            return null;
+        }
         if (Objects.nonNull(studyClass.getName()) && !"".equalsIgnoreCase(studyClass.getName())) {
             depDB.setName(studyClass.getName());
         }
         if (Objects.nonNull(studyClass.getCode()) && !"".equalsIgnoreCase(studyClass.getCode())) {
-            depDB.setName(studyClass.getName());
+            depDB.setCode(studyClass.getCode());
+        }
+        if (Objects.nonNull(studyClass.getClassroom()) && !"".equalsIgnoreCase(studyClass.getClassroom())) {
+            depDB.setClassroom(studyClass.getClassroom());
         }
         if (Objects.nonNull(studyClass.getDescription()) && !"".equalsIgnoreCase(studyClass.getDescription())) {
             depDB.setDescription(studyClass.getDescription());
         }
+
+        List<Student> oldStudents = depDB.getStudents();
+        for (Student oldStudent : oldStudents) {
+            oldStudent.getStudyClasses().remove(depDB);
+        }
+
         try {
+            List<Student> newStudents = new ArrayList<>();
+            for (Integer studentId : studyClass.getStudentsIds()) {
+                Student student = studentService.findById(studentId);
+                if (student != null) {
+                    newStudents.add(student);
+                    student.getStudyClasses().add(depDB); // Adicione a StudyClass aos novos students
+                } else {
+                    throw new ServiceException("Estudante não encontrado com ID: " + studentId);
+                }
+            }
+
             Professor professor = professorService.findById(studyClass.getProfessorId());
             Subject subject = subjectService.findById(studyClass.getSubjectId());
             if (professor == null || subject == null) {
                 throw new ServiceException("Professor ou disciplina não encontrados");
             }
-            List<Student> students = new ArrayList<>();
-            for (Integer studentId : studyClass.getStudentsIds()) {
-                Student student = studentService.findById(studentId);
-                if (student != null) {
-                    students.add(student);
-                } else {
-                    throw new ServiceException("Estudante não encontrado com ID: " + studentId);
-                }
-            }
             LocalTime startTime = LocalTime.parse(studyClass.getStartTime(), DateTimeFormatter.ofPattern("HH:mm:ss"));
+            depDB.setStartTime(startTime);
+            depDB.setSubject(subject);
+            depDB.setProfessor(professor);
+            depDB.setStudents(newStudents);
 
-            StudyClass newStudyClass = StudyClass.builder()
-                    .subject(subject)
-                    .professor(professor)
-                    .code(studyClass.getCode())
-                    .name(studyClass.getName())
-                    .classroom(studyClass.getClassroom())
-                    .description(studyClass.getDescription())
-                    .startTime(startTime)
-                    .students(students)
-                    .build();
-
-            for (Student student : students) {
-                student.getStudyClasses().add(newStudyClass);
-            }
-
-            return studyClassRepository.save(newStudyClass);
+            return studyClassRepository.save(depDB);
         } catch (Exception e) {
             throw new ServiceException("Erro ao criar a StudyClass", e);
         }

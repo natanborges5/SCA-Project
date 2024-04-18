@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class SubjectRequestDto {
     private String name;
     private String description;
-    private Integer workLoad;
+    private Integer workload;
     private Integer creditNumber;
 }
