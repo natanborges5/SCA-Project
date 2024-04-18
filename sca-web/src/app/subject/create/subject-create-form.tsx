@@ -18,7 +18,7 @@ export const CreateSubjectForm = () => {
                     onSuccess(data, variables, context) {
                         notifications.show({
                             id: 'subject-create',
-                            title: 'Subject criado com sucesso',
+                            title: 'Disciplina criada com sucesso',
                             message: '',
                             color: 'green',
                             className: 'text-white',
@@ -31,7 +31,7 @@ export const CreateSubjectForm = () => {
                     onError(error: any, variables, context) {
                         notifications.show({
                             id: 'subject-create',
-                            title: 'Falha ao criar subject',
+                            title: 'Falha ao criar Disciplina',
                             message: error?.response?.data?.message,
                             color: 'red',
                             className: 'text-white',

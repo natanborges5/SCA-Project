@@ -15,7 +15,6 @@ export const BaseLayout = ({ children }: PropsWithChildren) => {
             />
             <AppShell
                 header={{ height: 48, offset: true }}
-                // aside={{ width: 200, breakpoint: 'sm', collapsed: { mobile: !opened } }}
                 withBorder={false}
                 transitionDuration={500}
                 transitionTimingFunction="ease"

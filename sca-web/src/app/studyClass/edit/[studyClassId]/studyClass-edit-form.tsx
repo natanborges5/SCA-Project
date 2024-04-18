@@ -26,7 +26,7 @@ export const EditStudyClassForm = () => {
                     onSuccess(data, variables, context) {
                         notifications.show({
                             id: 'announcement-create',
-                            title: 'Anuncio criado com sucesso',
+                            title: 'Turma editada com sucesso',
                             message: '',
                             color: 'green',
                             className: 'text-white',
@@ -38,7 +38,7 @@ export const EditStudyClassForm = () => {
                     onError(error: any, variables, context) {
                         notifications.show({
                             id: 'announcement-create',
-                            title: 'Falha ao criar anuncio',
+                            title: 'Falha ao editar turma',
                             message: error?.response?.data?.message,
                             color: 'red',
                             className: 'text-white',

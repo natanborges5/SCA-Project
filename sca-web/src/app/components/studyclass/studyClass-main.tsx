@@ -66,7 +66,7 @@ export const StudyClassList = () => {
                             onSuccess(data, variables, context) {
                                 notifications.show({
                                     id: 'announcement-create',
-                                    title: 'Anuncio criado com sucesso',
+                                    title: 'Turma criada com sucesso',
                                     message: '',
                                     color: 'green',
                                     className: 'text-white',
@@ -79,7 +79,7 @@ export const StudyClassList = () => {
                             onError(error: any, variables, context) {
                                 notifications.show({
                                     id: 'announcement-create',
-                                    title: 'Falha ao criar anuncio',
+                                    title: 'Falha ao criar Turma',
                                     message: error?.response?.data?.message,
                                     color: 'red',
                                     className: 'text-white',

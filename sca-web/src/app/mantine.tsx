@@ -1,8 +1,7 @@
-"use client";
 import { MantineProvider, createTheme, Button, Title } from '@mantine/core';
 import { Notifications } from "@mantine/notifications";
 import { PropsWithChildren } from "react";
-
+import '@mantine/notifications/styles.css';
 export const MantineThemeProvider = ({ children }: PropsWithChildren) => {
     return (
         <MantineProvider
@@ -22,8 +21,6 @@ export const MantineThemeProvider = ({ children }: PropsWithChildren) => {
             <Notifications
                 position="top-right"
                 zIndex={2000}
-                limit={1}
-                autoClose={3000}
             />
             {children}
         </MantineProvider>

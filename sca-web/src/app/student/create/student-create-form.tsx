@@ -18,7 +18,7 @@ export const CreateStudentForm = () => {
                     onSuccess(data, variables, context) {
                         notifications.show({
                             id: 'student-create',
-                            title: 'Student criado com sucesso',
+                            title: 'Estudante criado com sucesso',
                             message: '',
                             color: 'green',
                             className: 'text-white',
@@ -31,7 +31,7 @@ export const CreateStudentForm = () => {
                     onError(error: any, variables, context) {
                         notifications.show({
                             id: 'student-create',
-                            title: 'Falha ao criar student',
+                            title: 'Falha ao criar Estudante',
                             message: error?.response?.data?.message,
                             color: 'red',
                             className: 'text-white',
