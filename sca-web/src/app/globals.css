@@ -1,0 +1,12 @@
+@import url("@mantine/core/styles.css");
+@import url("@mantine/nprogress/styles.css");
+@import url("./work-sans.font-family.css");
+@layer tailwind {
+  @tailwind base;
+}
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: "Work Sans", sans-serif;
+}
